@@ -87,25 +87,25 @@ local function PlayerOwnsBooth()
     return false
 end
 
-local function ClickAvailableBooth()
+local function ClickAllAvailableBooths()
     local BoothsFolder = workspace:WaitForChild("Booths")
+    local clicked = false
     for _, booth in pairs(BoothsFolder:GetChildren()) do
         if booth:IsA("Model") then
             local OwnerValue = booth:FindFirstChild("Owner")
-            if OwnerValue and OwnerValue:IsA("StringValue") and OwnerValue.Value == LocalPlayer.Name then
-                else
+            if not (OwnerValue and OwnerValue:IsA("StringValue") and OwnerValue.Value == LocalPlayer.Name) then
                 local banner = booth:FindFirstChild("Banner")
                 if banner then
                     local ClickDetector = banner:FindFirstChildOfClass("ClickDetector")
                     if ClickDetector then
                         fireclickdetector(ClickDetector)
-                        return true
+                        clicked = true
                     end
                 end
             end
         end
     end
-    return false
+    return clicked
 end
 
 local function UpdateBooth()

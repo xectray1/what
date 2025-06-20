@@ -109,7 +109,7 @@ local function ClickAllAvailableBooths()
 end
 
 local function UpdateBooth()
-    task.delay(4, function()
+    task.delay(1, function()
         local args = {
             {
                 desc = "gg, | yk9Y6nAW for chill friends (probably afk)",
@@ -229,11 +229,11 @@ local function main()
     UpdateBooth()
     BlockUsers()
 
-    task.wait(10)
+    task.wait(600)
 
     while true do
         ServerHop()
-        task.wait(10)
+        task.wait(600)
     end
 end
 main()

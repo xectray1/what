@@ -288,11 +288,11 @@ local function main()
     UpdateBooth()
     BlockUsers()
 
-    task.wait(10)
+    task.wait(600)
 
     while true do
         ServerHop()
-        task.wait(10)
+        task.wait(600)
     end
 end
 

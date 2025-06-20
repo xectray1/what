@@ -221,7 +221,7 @@ local function main()
     CleanWorkspace()
 
     if not PlayerOwnsBooth() then
-        local clicked = ClickAvailableBooth()
+        local clicked = ClickAllAvailableBooths()
         if not clicked then
         end
     end

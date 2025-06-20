@@ -1,8 +1,61 @@
 local HttpService = cloneref(game:GetService("HttpService"))
 local TeleportService = cloneref(game:GetService("TeleportService"))
 local Players = cloneref(game:GetService("Players"))
+local TextChatService = cloneref(game:GetService("TextChatService"))
 local LocalPlayer = Players.LocalPlayer
 local PlaceId = game.PlaceId
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "ChatSpyGUI"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = game.CoreGui
+
+local ChatFrame = Instance.new("ScrollingFrame")
+ChatFrame.Size = UDim2.new(0, 400, 0, 300)
+ChatFrame.Position = UDim2.new(1, -410, 1, -310)
+ChatFrame.BackgroundTransparency = 0.3
+ChatFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+ChatFrame.BorderSizePixel = 0
+ChatFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+ChatFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+ChatFrame.ScrollBarThickness = 6
+ChatFrame.Parent = ScreenGui
+
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.Padding = UDim.new(0, 4)
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Parent = ChatFrame
+
+local function AddMessage(playerName, messageText)
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, -10, 0, 20)
+    label.BackgroundTransparency = 1
+    label.TextColor3 = Color3.new(1, 1, 1)
+    label.Font = Enum.Font.Code
+    label.TextSize = 16
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Text = "[" .. playerName .. "]: " .. messageText
+    label.Parent = ChatFrame
+
+    task.delay(0.05, function()
+        ChatFrame.CanvasPosition = Vector2.new(0, ChatFrame.AbsoluteCanvasSize.Y)
+    end)
+end
+TextChatService.OnIncomingMessage = function(message)
+    if message.TextSource then
+        local player = game.Players:GetPlayerByUserId(message.TextSource.UserId)
+        if player and player ~= game.Players.LocalPlayer then
+            AddMessage(player.Name, message.Text)
+        end
+    end
+end
+
+local QueuedScript = [[
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/xectray1/what/refs/heads/main/ok.lua"))()
+]]
+if queue_on_teleport then
+    queue_on_teleport(QueuedScript)
+end
 
 local VisitedServers = {}
 
@@ -212,6 +265,12 @@ local function ServerHop()
     VisitedServers[chosen.id] = true
     SaveVisitedServers()
 
+    if queue_on_teleport then
+        queue_on_teleport([[
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/xectray1/what/refs/heads/main/ok.lua"))()
+        ]])
+    end
+
     TeleportService:TeleportToPlaceInstance(PlaceId, chosen.id, LocalPlayer)
 end
 
@@ -229,11 +288,12 @@ local function main()
     UpdateBooth()
     BlockUsers()
 
-    task.wait(600)
+    task.wait(10)
 
     while true do
         ServerHop()
-        task.wait(600)
+        task.wait(10)
     end
 end
+
 main()

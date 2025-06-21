@@ -165,8 +165,10 @@ local function UpdateBooth()
     task.delay(1, function()
         local args = {
             {
-                desc = "gg, | yk9Y6nAW for chill friends (probably afk)",
-                image = ""
+                primaryColor = Color3.new(1, 5.960464477539063e-08, 0.0003986954689025879),
+                image = "",
+                accentColor = Color3.new(5.960464477539063e-08, 0.1208084225654602, 1),
+                desc = "\gg, | yk9Y6nAW for chill friends (probably afk)"
             }
         }
         cloneref(game:GetService("ReplicatedStorage")):WaitForChild("Remotes"):WaitForChild("UpdateBooth"):FireServer(unpack(args))
